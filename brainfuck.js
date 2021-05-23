@@ -73,7 +73,6 @@ class Brainfuck {
 			}
     	this.arr = new Uint8Array(this.size)
     	this.dataPointer = 0;
-    	this.size = arraySize;
     	this.str = "";
 	}
     getData() {
