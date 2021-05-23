@@ -66,14 +66,14 @@ class Brainfuck {
     START(string) {
     	console.clear();
     	this.code = string;
+	this.arr = new Uint8Array(this.size)
+    	this.dataPointer = 0;
+    	this.str = "";
     	this.errorHandling();
 		this.instructionPointer = 0;
 			for(this.instructionPointer;this.instructionPointer < string.length;this.instructionPointer++) {
 				this.interpret(string.charAt(this.instructionPointer))
 			}
-    	this.arr = new Uint8Array(this.size)
-    	this.dataPointer = 0;
-    	this.str = "";
 	}
     getData() {
     return this.arr[this.dataPointer]
