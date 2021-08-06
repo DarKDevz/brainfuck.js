@@ -37,44 +37,46 @@ class Brainfuck {
     }
     }
     startLoop() {
-    	if(this.getData() != 0)this.loop.push(this.instructionPointer);
-    	else {
-    				let count = 0;
-    				for(let charInd = this.instructionPointer+1; charInd < this.code.length; charInd++) {
-    				if(this.code[charInd] == "[") {
-    					count++
-    					}
-    				if(this.code[charInd] == "]") {
-    					count--
-    					if(count < 0) {
-    						//found closing
-    						this.instructionPointer = charInd;
-    						this.loop.pop()
-    						return;
-    						}
-    					}
-    				}
-    		}
+        if(this.getData() != 0)this.loop.push(this.instructionPointer);
+        else {
+                    let count = 0;
+                    for(let charInd = this.instructionPointer+1; charInd < this.code.length; charInd++) {
+                    if(this.code[charInd] == "[") {
+                        count++
+                        }
+                    if(this.code[charInd] == "]") {
+                        count--
+                        if(count < 0) {
+                            //found closing
+                            this.instructionPointer = charInd;
+                            this.loop.pop()
+                            return;
+                            }
+                        }
+                    }
+            }
     }
     endLoop() {
-    	if(this.loop) {
-    		this.instructionPointer = this.loop.pop()-1;
-    	}else {
-    	throw('unnecessary ] at:' + this.instructionPointer)
-    	}
+        if(this.loop) {
+            this.instructionPointer = this.loop.pop()-1;
+        }else {
+        throw('unnecessary ] at:' + this.instructionPointer)
+        }
     }
     START(string) {
-    	console.clear();
-    	this.code = string;
-	this.arr = new Uint8Array(this.size)
-    	this.dataPointer = 0;
-    	this.str = "";
-    	this.errorHandling();
-		this.instructionPointer = 0;
-			for(this.instructionPointer;this.instructionPointer < string.length;this.instructionPointer++) {
-				this.interpret(string.charAt(this.instructionPointer))
-			}
-	}
+        console.clear();
+        this.code = string;
+    this.arr = new Uint8Array(this.size)
+        this.dataPointer = 0;
+        this.str = "";
+        this.errorHandling();
+        this.instructionPointer = 0;
+            for(this.instructionPointer;this.instructionPointer < string.length;this.instructionPointer++) {
+                this.interpret(string.charAt(this.instructionPointer))
+                if(this.instructionPointer == NaN) this.instructionPointer = this.lastPointer+1
+                this.lastPointer = this.instructionPointer;
+            }
+    }
     getData() {
     return this.arr[this.dataPointer]
     }
@@ -97,13 +99,13 @@ class Brainfuck {
     this.dataPtrError();
     }
     dataPtrError() {
-    	if(this.dataPointer < 0) throw("data ptr is below 0")
-    	if(this.dataPointer > this.size) throw("data ptr is bigger than array size")	
+        if(this.dataPointer < 0) throw("data ptr is below 0")
+        if(this.dataPointer > this.size) throw("data ptr is bigger than array size")    
     }
     errorHandling() {
-    	let closingStarts = [...this.code].filter(x => x == "[")
-    	let closingEnds = [...this.code].filter(x => x == "]")
-    	if(closingEnds.length != closingStarts.length) throw("added unnecessary [ or ]")
+        let closingStarts = [...this.code].filter(x => x == "[")
+        let closingEnds = [...this.code].filter(x => x == "]")
+        if(closingEnds.length != closingStarts.length) throw("added unnecessary [ or ]")
     }
     input(char) {
     this.arr[this.dataPointer] = new Uint8Array([char.charCodeAt(0)])[0]
